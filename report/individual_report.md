@@ -2,21 +2,23 @@
 
 ## 1. Thông tin cá nhân
 
-| Thông tin | Nội dung |
-| --- | --- |
-| Họ và tên | Vũ Thường Tín |
-| MSSV | 2A202602955 |
-| Khóa/Lớp | K4-L3-DAY10 |
-| Tên nhóm | TAL (theo tên repository; cần đối chiếu tên nhóm chính thức) |
-| Vai trò chính | Đóng gói artifact và kiểm tra bằng chứng kết quả tích hợp |
-| Repository | https://github.com/Nituv05/K4-L3-DAY10-TAL-DataPipeline |
-| Ngày lập báo cáo | 2026-09-25 |
-| Commit đóng góp | `e608ed8` — đưa artifact vào Git, đã merge vào `origin/main`; `2aee2f9` — xác minh artifact và cập nhật báo cáo trên `tinvt` |
+| Thông tin         | Nội dung                  |
+| ------------------ | -------------------------- |
+| Họ và tên       | Trần Quốc Bảo Long             |
+| MSSV               | 2A202602696                     |
+| Khóa/Lớp         | K4              |
+| Tên nhóm         | TAL     |
+| Vai trò chính    | Frontend, BA                 |
+| Repository         | https://github.com/Nituv05/K4-L3-DAY10-TAL-DataPipeline |
+| Ngày hoàn thành | [2026-09-25]              |
 
 ## 2. Vai trò và phạm vi công việc
 
 ### Phần việc có bằng chứng trong lịch sử commit
 
+| Module/deliverable | File/hàm phụ trách | Input nhận vào | Output bàn giao  | Trạng thái                                 |
+| ------------------ | --------------------- | ---------------- | ----------------- | -------------------------------------------- |
+| Thiết kế UI cho hệ thống      | [File/hàm]           | [Input]          | [Output/artifact] | [Hoàn thành/Một phần/Chưa hoàn thành] |
 | Deliverable | File đưa vào Git | Input | Output bàn giao | Trạng thái |
 | --- | --- | --- | --- | --- |
 | Dữ liệu và benchmark | `data/clean/`, `data/eval/test_set.json` | Output pipeline, raw snapshot đã có trong repo | Dữ liệu ba trạng thái và 10 câu hỏi | Đã commit trên `tinvt` |
@@ -129,6 +131,15 @@ Nếu có thêm thời gian, tôi sẽ đánh giá tách riêng sáu loại corr
 
 ## 10. Tự kiểm tra trước khi nộp
 
+- [x] Nội dung báo cáo phản ánh đúng phần việc và mức hiểu của tôi.
+- [ ] Tôi có thể giải thích luồng end-to-end, không chỉ module mình phụ trách.
+- [ ] Mọi kết luận về kết quả đều có artifact hoặc metric để đối chiếu.
+- [ ] Tôi không ghi “đã chạy thành công” cho phần chưa được kiểm chứng.
+- [x] Báo cáo không chứa `.env`, API key, token hoặc secret.
+- [x] Báo cáo này không phải bản sao nguyên văn của báo cáo nhóm hoặc báo cáo thành viên khác.
+
+**Họ và tên:** Trần Quốc Bảo Long
+**Ngày xác nhận:** [2026-09-25]
 - [x] Phạm vi đóng góp được giới hạn theo commit `e608ed8` và `2aee2f9`.
 - [x] Kết luận định lượng có JSON metrics, answers, quality và freshness để đối chiếu.
 - [x] Không ghi hai script đã chạy lại thành công trên bản nộp cuối khi chưa xác minh.
