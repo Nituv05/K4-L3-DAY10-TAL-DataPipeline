@@ -7,7 +7,7 @@
   "stale_ratio": 0.0417,
   "max_age_days": 181,
   "is_fresh": true,
-  "generated_at": "2026-09-25T08:28:17.529734+00:00",
+  "generated_at": "2026-09-25T09:00:34.265034+00:00",
   "stale_ratio_threshold": 0.25,
   "alert": "OK - du lieu con tuoi."
 }
