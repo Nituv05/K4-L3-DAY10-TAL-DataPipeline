@@ -7,7 +7,7 @@
 | Họ và tên | Vũ Thường Tín |
 | MSSV | 2A202602955 |
 | Khóa/Lớp | K4-L3-DAY10 |
-| Tên nhóm | TAL (theo tên repository; cần đối chiếu tên nhóm chính thức) |
+| Tên nhóm | TAL  |
 | Vai trò chính | Đóng gói artifact và kiểm tra bằng chứng kết quả tích hợp |
 | Repository | https://github.com/Nituv05/K4-L3-DAY10-TAL-DataPipeline |
 | Ngày lập báo cáo | 2026-09-25 |
