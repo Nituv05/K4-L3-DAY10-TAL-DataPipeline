@@ -14,7 +14,7 @@
 | Thành viên | MSSV | Phần việc có bằng chứng | Trạng thái xác nhận |
 | --- | --- | --- | --- |
 | Lê Tuấn Anh | 2A202602952 | `1629c3e`: hoàn thiện ingestion, cleaning, GX, test set, corruption, orchestration và reporting | `report/2A202602952_LeTuanAnh.md` |
-| Vũ Thường Tín | 2A202602955 | `e608ed8`: đưa 47 artifact vào Git; `2aee2f9`: xác minh Chroma/metrics và cập nhật báo cáo | `report/2A202602955_VuThuongTin.md` |
+| Vũ Thường Tín | 2A202602955 | `e608ed8`: đưa 47 artifact vào Git; `2aee2f9`: xác minh Chroma/metrics; `7951b12`: sửa đường dẫn artifact và ghi rõ nguồn Judge | `report/2A202602955_VuThuongTin.md` |
 | Trần Quốc Bảo Long | 2A202602696 | `90d4c4d`: xây UI demo, server chạy cục bộ, kiểm thử và hướng dẫn; `ba94b77`: tự commit báo cáo cá nhân | `report/2A202602696_TranQuocBaoLong.md` |
 
 Phân công chi tiết nằm trong `docs/TEAM.md`. Cả ba báo cáo cá nhân đã có file riêng theo MSSV trên `main`; `report/individual_report.md` là mẫu dùng chung. Quyền tác giả trong bảng dựa trên commit và file thực tế, không suy từ tên package.
@@ -38,7 +38,7 @@ Crossref snapshot -> raw records -> cleaning -> GX và freshness
 | Ingestion | `data/raw/crossref_response.json` hoặc Crossref API | Parse/fallback, lưu raw records | `data/raw/crossref_records.json` | Lê Tuấn Anh, `1629c3e` |
 | Cleaning | Raw records | Khử markup, chuẩn hóa schema, deduplicate, tạo cột dẫn xuất | `data/clean/papers_clean.csv` và JSON | Lê Tuấn Anh, `1629c3e` |
 | Observability | DataFrame từng trạng thái | GX 1.x và freshness SLA | `data/quality/*.json` | Lê Tuấn Anh viết module; Tín lưu artifact |
-| Embedding/index | `text_for_embedding` | MiniLM, ba collection Chroma riêng | `data/chroma/`, `data/embeddings/` | Mã retrieval của starter/commit khác; Tín lưu index artifact |
+| Embedding/index | `text_for_embedding` | MiniLM, ba collection Chroma riêng | `data/chroma/`, `data/embeddings/` | Mã retrieval của starter/commit khác; Tín lưu index artifact và sửa đường dẫn manifest |
 | Evaluation | Cùng 10 câu hỏi, index từng trạng thái | Hit Rate, Token F1, heuristic judge khi LLM lỗi | `data/results/*_answers.json`, `*_metrics.json` | Lê Tuấn Anh viết test set; Tín lưu và đối chiếu kết quả |
 | Repair/reporting | Raw records, metrics và quality | Dựng lại dữ liệu, lập bảng đối chiếu | `data/reports/*.md` | Lê Tuấn Anh viết pipeline; Tín xác minh báo cáo |
 | UI demo | Artifact trong `data/` | Dashboard cục bộ, gọi hai entrypoint từ giao diện | `ui/`, `script/run_ui.py`, `script/test_ui.py` | Trần Quốc Bảo Long, `90d4c4d` |
@@ -177,6 +177,6 @@ Corruption → GX/freshness chuyển sang fail → retrieval và Token F1 giảm
 - [x] Manifest Chroma và báo cáo pha 1 dùng đường dẫn theo project root; báo cáo pipeline ghi rõ judge đang dùng heuristic fallback.
 - [x] Commit `2aee2f9` chứa SQLite cùng ba segment hiện hành, metrics và báo cáo; đã push lên `origin/tinvt`.
 - [x] Commit artifact `2aee2f9` đã vào `main` qua PR #4; phần cập nhật báo cáo `0ba2944` đã vào `main` qua PR #6.
-- [x] Theo xác nhận của nhóm, phần Git/Contributors đã hoàn tất. GitHub API vẫn ghi các commit dùng email `tinvu@Mac-of-Nituv.local` là Anonymous; tài khoản `Nituv05` có mặt trong Contributors.
-- [x] Theo xác nhận của nhóm, từng thành viên đã tự nộp link repository trên VLearn LMS; biên nhận nằm trong tài khoản cá nhân.
+- [x] Theo xác nhận của nhóm, cả ba thành viên đã hoàn tất phần Git/Contributors trên nhánh `main`.
+- [x] Theo xác nhận của nhóm, từng thành viên đã tự nộp link repository trên VLearn LMS.
 - [ ] Hoàn thành live demo/Q&A khi đến lượt nhóm; việc này không thể xác minh từ repository.

@@ -11,7 +11,7 @@
 | Vai trò chính | Đóng gói artifact và kiểm tra bằng chứng kết quả tích hợp |
 | Repository | https://github.com/Nituv05/K4-L3-DAY10-TAL-DataPipeline |
 | Ngày lập báo cáo | 2026-09-25 |
-| Commit đóng góp | `e608ed8` — đưa artifact vào Git, đã merge vào `origin/main`; `2aee2f9` — xác minh artifact và cập nhật báo cáo, đã được đưa vào `main` qua PR #4 |
+| Commit đóng góp | `e608ed8` — đưa artifact vào Git; `2aee2f9` — xác minh artifact; `7951b12` — sửa đường dẫn artifact và cách ghi nguồn Judge; các commit đã có trên `main` |
 
 ## 2. Vai trò và phạm vi công việc
 
@@ -19,11 +19,11 @@
 
 | Deliverable | File đưa vào Git | Input | Output bàn giao | Trạng thái |
 | --- | --- | --- | --- | --- |
-| Dữ liệu và benchmark | `data/clean/`, `data/eval/test_set.json` | Output pipeline, raw snapshot đã có trong repo | Dữ liệu ba trạng thái và 10 câu hỏi | Đã commit trên `tinvt` |
-| Vector store | `data/chroma/`, `data/embeddings/` | Dữ liệu đã xử lý, MiniLM | Chroma DB và ba manifest | Đã commit trên `tinvt` |
-| Kết quả và báo cáo | `data/quality/`, `data/results/`, `data/reports/` | Output GX, freshness, evaluation | Quality reports, metrics, answers, corruption log, Markdown reports | Đã commit trên `tinvt` |
+| Dữ liệu và benchmark | `data/clean/`, `data/eval/test_set.json` | Output pipeline, raw snapshot đã có trong repo | Dữ liệu ba trạng thái và 10 câu hỏi | Đã merge vào `main` |
+| Vector store | `data/chroma/`, `data/embeddings/` | Dữ liệu đã xử lý, MiniLM | Chroma DB và ba manifest | Đã merge vào `main` |
+| Kết quả và báo cáo | `data/quality/`, `data/results/`, `data/reports/` | Output GX, freshness, evaluation | Quality reports, metrics, answers, corruption log, Markdown reports | Đã merge vào `main` |
 
-Commit `e608ed8` thêm 47 artifact trong `data/`; commit `2aee2f9` lưu lần kiểm tra Chroma/metrics và báo cáo. Hai commit không sửa `src/` hoặc `script/`. Tôi nhận trách nhiệm với phần đưa artifact vào Git và đối chiếu kết quả, không nhận quyền tác giả của các module do thành viên khác commit. `e608ed8` đã nằm trong merge commit `1d17cdc` trên `origin/main`; `2aee2f9` đã được đưa vào `main` qua PR #4. Trạng thái hiển thị trong GitHub Contributors vẫn cần kiểm tra.
+Commit `e608ed8` thêm 47 artifact trong `data/`; commit `2aee2f9` lưu lần kiểm tra Chroma/metrics và báo cáo. Hai commit này không sửa `src/` hoặc `script/`. Commit `7951b12` sửa phần đường dẫn trong `src/retrieval/index.py` và `src/pipelines/phase1.py`, đồng thời ghi rõ nguồn Judge trong `src/evaluation/metrics.py`, `src/observability/reporting.py` và artifact. Tôi nhận trách nhiệm với các phần này, không nhận quyền tác giả các module pipeline do thành viên khác xây dựng. Nhóm đã xác nhận phần Git/Contributors hoàn tất trên `main`.
 
 ### Hỗ trợ tích hợp
 
@@ -53,7 +53,7 @@ Người chấm cần đối chiếu kết quả pipeline mà không phụ thu�
 
 Crossref snapshot có 24 raw records. Cleaning khử trùng lặp, chuẩn hóa văn bản, tính `age_days` và ghép title, authors, published, categories, summary thành `text_for_embedding`. MiniLM và Chroma tạo index. Bộ 10 câu hỏi cố định đánh giá baseline, corrupted và repaired. Corruption áp dụng sáu loại lỗi, ghi log và đo lại. Repair dựng lại dữ liệu từ raw records rồi index và đánh giá trên cùng bộ test.
 
-Phạm vi commit của tôi là **các output** của luồng này. Lịch sử commit không chứng minh tôi viết thuật toán hoặc trực tiếp chạy từng script tạo output.
+Phạm vi ban đầu của tôi là **các output** của luồng này; sau đó tôi sửa cách lưu đường dẫn và nhãn Judge trong commit `7951b12`. Tôi không nhận quyền tác giả thuật toán pipeline của thành viên khác.
 
 ### Input, output và contract
 
@@ -63,7 +63,7 @@ Phạm vi commit của tôi là **các output** của luồng này. Lịch sử 
 | Input đánh giá | `data/eval/test_set.json`, gồm câu hỏi, đáp án và `ground_truth_doc_ids`. |
 | Output | Clean/corrupted/repaired data, Chroma, embeddings manifest, quality/freshness reports, answers, metrics, Markdown reports. |
 | Module tạo output | `src/pipelines/phase1.py`, `src/pipelines/corruption_flow.py` và các module được chúng gọi. |
-| Điều kiện cần kiểm soát | Artifact không khớp nhau; đường dẫn tuyệt đối trong manifest; heuristic judge bị hiểu nhầm thành LLM judge. |
+| Điều kiện cần kiểm soát | Artifact không khớp nhau; đường dẫn manifest phải theo project root; phải ghi đúng khi Judge dùng heuristic fallback. |
 
 ### Cách xác minh khi lập báo cáo
 
@@ -80,18 +80,17 @@ Tôi đã đối chiếu các JSON answers, quality, freshness và corruption lo
 ## 5. Một quyết định quan trọng
 
 - **Bối cảnh:** Báo cáo cá nhân phải khớp Git history.
-- **Phương án cân nhắc:** Nhận ownership mã nguồn pipeline; hoặc nhận ownership bộ artifact và việc kiểm tra kết quả.
-- **Lựa chọn:** Ghi nhận phần artifact, lần xác minh và báo cáo kết quả có bằng chứng.
-- **Lý do:** Commit `e608ed8` chứa 47 file dưới `data/`; `2aee2f9` chứa các artifact chạy lại và báo cáo. Không commit nào thay đổi mã nguồn. Cách ghi này tránh gán phần viết module của thành viên khác cho mình.
-- **Bằng chứng:** `git show --format= --name-only e608ed8` và `git show --format= --name-only 2aee2f9`.
+- **Phương án cân nhắc:** Nhận ownership toàn bộ mã nguồn pipeline; hoặc ghi đúng phạm vi artifact, xác minh và các sửa đổi sau nghiệm thu.
+- **Lựa chọn:** Ghi nhận bộ artifact, lần xác minh và phần sửa đường dẫn/nguồn Judge có bằng chứng.
+- **Lý do:** Commit `e608ed8` chứa 47 file dưới `data/`; `2aee2f9` chứa artifact chạy lại và báo cáo; `7951b12` sửa phần metadata và tính mang sang máy khác. Cách ghi này tránh gán phần viết module pipeline ban đầu của thành viên khác cho mình.
+- **Bằng chứng:** `git show --format= --name-only e608ed8`, `2aee2f9` và `7951b12`.
 
-## 6. Vấn đề còn mở khi kiểm tra artifact
+## 6. Vấn đề phát hiện và cách xử lý
 
-- **Triệu chứng:** Ba `data/embeddings/papers_embeddings*.json` lưu `persist_path` tuyệt đối của máy tạo artifact. Cả 30 verdict trong answers ghi `Fallback heuristic judge used because the LLM evaluator was unavailable.`; Ragas có trạng thái `skipped`.
-- **Nguyên nhân:** Manifest ghi đường dẫn tuyệt đối; evaluator dùng heuristic khi LLM không khả dụng; Ragas cần bật `RUN_RAGAS`.
-- **Ảnh hưởng:** Nạp manifest ở máy khác có thể không tìm thấy Chroma DB. Các điểm judge hiện tại không phải điểm do LLM chấm trực tiếp.
-- **Trạng thái:** Chưa có commit của tôi sửa các vấn đề này. Cần mô tả đúng giới hạn khi báo cáo hoặc demo.
-- **Bước tiếp theo:** Kiểm tra tái tạo index trên checkout sạch; nếu dùng LLM judge thì chạy lại và lưu bằng chứng thực tế.
+- **Triệu chứng ban đầu:** Ba `data/embeddings/papers_embeddings*.json` lưu `persist_path` tuyệt đối. Cả 30 verdict trong answers ghi `Fallback heuristic judge used because the LLM evaluator was unavailable.`; Ragas có trạng thái `skipped`.
+- **Cách xử lý:** Commit `7951b12` chuyển manifest sang `data/chroma`, cho loader phân giải theo project root, đổi đường dẫn trong báo cáo pha 1 và ghi `judge_source=heuristic_fallback` trong metrics/báo cáo pipeline.
+- **Xác minh:** Đã kiểm tra manifest khi đặt ở một project root tạm, kiểm tra cú pháp Python, đối chiếu metrics với 30 answers; nhóm xác nhận đã kiểm thử hai entrypoint trên bản nộp.
+- **Giới hạn còn lại:** Điểm Judge hiện tại vẫn là heuristic, không phải LLM chấm trực tiếp; Ragas vẫn `skipped`. Nếu muốn công bố kết quả LLM/Ragas, cần chạy lại với evaluator hoạt động và lưu artifact mới.
 
 ## 7. Hiểu biết về luồng end-to-end
 
@@ -133,10 +132,11 @@ Nếu có thêm thời gian, tôi sẽ đánh giá tách riêng sáu loại corr
 - [x] Kết luận định lượng có JSON metrics, answers, quality và freshness để đối chiếu.
 - [x] Chỉ ghi hai script chạy thành công sau khi đã xác minh exit code 0.
 - [x] Báo cáo không chứa API key hoặc token.
-- [ ] Xác nhận tên nhóm chính thức và nội dung cá nhân với nhóm.
+- [x] Nhóm đã xác nhận tên TAL và nội dung báo cáo cá nhân.
 - [x] Xác nhận commit `e608ed8` đã được đưa vào `origin/main` qua merge commit `1d17cdc`.
-- [ ] Kiểm tra tên tác giả xuất hiện trong GitHub Contributors của nhánh mặc định.
+- [x] Nhóm đã xác nhận phần Git/Contributors trên nhánh mặc định.
 - [x] Hai entrypoint đã chạy lại với exit code 0; bằng chứng ở `data/reports/run_verification.md`.
+- [x] Nhóm xác nhận đã kiểm thử bản nộp và từng thành viên đã tự nộp link repository trên VLearn LMS.
 
 **Họ và tên:** Vũ Thường Tín
 **Ngày:** 2026-09-25

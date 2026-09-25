@@ -17,7 +17,7 @@
 | Thành viên | Commit tiêu biểu | Nội dung có thể đối chiếu |
 | --- | --- | --- |
 | Lê Tuấn Anh | `1629c3e`, `ad4e3d7`, `ea8202e` | Hoàn thiện 8 file của tầng dữ liệu/pipeline; viết báo cáo cá nhân và đưa về tên file theo MSSV. |
-| Vũ Thường Tín | `e608ed8`, `2aee2f9`, `ae93326` | Đưa artifact chạy pipeline vào Git, xác minh ba trạng thái và cập nhật báo cáo. |
+| Vũ Thường Tín | `e608ed8`, `2aee2f9`, `ae93326`, `7951b12` | Đưa artifact vào Git, xác minh ba trạng thái, sửa đường dẫn manifest và ghi rõ nguồn Judge trong báo cáo. |
 | Trần Quốc Bảo Long | `90d4c4d`, `ba94b77` | Thêm UI demo, server Python, bộ kiểm thử UI và báo cáo cá nhân. |
 
 `src/core/`, `src/retrieval/` và `src/evaluation/metrics.py` đã có trong starter repo hoặc được sửa bởi commit khác; bảng trên không gán quyền tác giả các module đó cho ba thành viên nếu lịch sử commit không chứng minh. Báo cáo riêng mô tả phần việc mỗi người tự thực hiện; không dùng chung `report/individual_report.md` làm bài nộp cá nhân.
@@ -32,7 +32,7 @@
 
 ### Vũ Thường Tín — 2A202602955
 
-- **Đóng góp:** Đưa 47 artifact sạch/bẩn/phục hồi vào Git tại `e608ed8`; chạy lại hai entrypoint, kiểm tra Chroma 24/21/24 document, đối chiếu metrics với answers và lưu `data/reports/run_verification.md` tại `2aee2f9`; cập nhật báo cáo nhóm và cá nhân.
+- **Đóng góp:** Đưa 47 artifact sạch/bẩn/phục hồi vào Git tại `e608ed8`; chạy lại hai entrypoint, kiểm tra Chroma 24/21/24 document, đối chiếu metrics với answers và lưu `data/reports/run_verification.md` tại `2aee2f9`; sửa đường dẫn manifest và ghi rõ nguồn Judge tại `7951b12`; cập nhật báo cáo nhóm và cá nhân.
 - **Bàn giao:** Bộ artifact nhất quán, bảng metrics và [`báo cáo riêng`](../report/2A202602955_VuThuongTin.md). Không nhận quyền tác giả mã nguồn pipeline/retrieval.
 - **Điều học được:** Exit code 0, quality pass và LLM judge là ba khẳng định khác nhau; cần đọc answers và log thực tế trước khi kết luận.
 
@@ -45,5 +45,5 @@
 ## Việc nhóm cần xác nhận trước khi nộp
 
 - [x] Ba thành viên có báo cáo riêng theo MSSV trên nhánh `main`.
-- [x] Nhóm xác nhận phần Git/Contributors đã hoàn tất. GitHub API vẫn hiển thị các commit có email `tinvu@Mac-of-Nituv.local` dưới tên Anonymous; tài khoản `Nituv05` có mặt trong Contributors.
-- [x] Theo xác nhận của nhóm, mỗi thành viên đã tự nộp link repository trên VLearn LMS. Biên nhận chỉ xem được trong tài khoản của từng người.
+- [x] Nhóm xác nhận cả ba thành viên đã hoàn tất phần Git/Contributors trên nhánh `main`.
+- [x] Nhóm xác nhận mỗi thành viên đã tự nộp link repository trên VLearn LMS.
