@@ -1,0 +1,74 @@
+{
+  "generated_at": "2026-09-25T09:00:15.745026+00:00",
+  "rows_before": 24,
+  "rows_after": 21,
+  "duplicate_paper_ids": 2,
+  "blank_summary_rows": 4,
+  "corruptions_applied": 6,
+  "events": [
+    {
+      "step": 1,
+      "corruption_type": "drop_latest_records",
+      "description": "Bo 5 bai bao moi nhat (20% corpus).",
+      "affected_rows": 5,
+      "affected_paper_ids": [
+        "10.1145/3637528.3671812",
+        "10.1145/3637528.3671808",
+        "10.1145/3637528.3671804",
+        "10.1145/3637528.3671807",
+        "10.1145/3637528.3671802"
+      ]
+    },
+    {
+      "step": 2,
+      "corruption_type": "blank_summary",
+      "description": "Xoa trang truong summary.",
+      "affected_rows": 2,
+      "affected_paper_ids": [
+        "10.1145/3637528.3671824",
+        "10.1145/3637528.3671823"
+      ]
+    },
+    {
+      "step": 3,
+      "corruption_type": "inject_noise",
+      "description": "Chen chuoi ky tu rac vao summary.",
+      "affected_rows": 2,
+      "affected_paper_ids": [
+        "10.1145/3637528.3671822",
+        "10.1145/3637528.3671821"
+      ]
+    },
+    {
+      "step": 4,
+      "corruption_type": "truncate_title",
+      "description": "Cat tieu de xuong duoi 8 ky tu.",
+      "affected_rows": 2,
+      "affected_paper_ids": [
+        "10.1145/3637528.3671824",
+        "10.1145/3637528.3671823"
+      ]
+    },
+    {
+      "step": 5,
+      "corruption_type": "stale_date",
+      "description": "Lui ngay xuat ban 365 ngay.",
+      "affected_rows": 3,
+      "affected_paper_ids": [
+        "10.1145/3637528.3671824",
+        "10.1145/3637528.3671823",
+        "10.1145/3637528.3671822"
+      ]
+    },
+    {
+      "step": 6,
+      "corruption_type": "duplicate_rows",
+      "description": "Nhan ban dong tao du lieu trung lap.",
+      "affected_rows": 2,
+      "affected_paper_ids": [
+        "10.1145/3637528.3671824",
+        "10.1145/3637528.3671823"
+      ]
+    }
+  ]
+}
