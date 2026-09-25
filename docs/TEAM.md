@@ -1,58 +1,49 @@
-# Danh Sách Thành Viên & Báo Cáo Phân Công Nhóm
+# Nhóm TAL — Day 10 Data Pipeline & Data Observability
 
-- **Tên Nhóm:** `TAL`
-- **Mã Nhóm / Lớp:** `K4-L3-DAY10`
-- **Tên Repository Nộp Bài:** `K4-L3-DAY10-TenNhom-DataPipeline`
+- **Lớp:** K4-L3-DAY10
+- **Repository:** https://github.com/Nituv05/K4-L3-DAY10-TAL-DataPipeline
+- **Hình thức:** Ba thành viên dùng chung repository; phần việc dưới đây đối chiếu theo commit và artifact hiện có.
 
----
+## Thành viên và phân công
 
-## # Thành viên
+| STT | Họ và tên | MSSV | Vai trò và checkpoint | Deliverable chính | Báo cáo cá nhân |
+| ---: | --- | --- | --- | --- | --- |
+| 1 | Lê Tuấn Anh | 2A202602952 | Pipeline dữ liệu và tích hợp; CP0–CP5 | `src/ingestion/`, `src/observability/`, `src/evaluation/testset.py`, `src/pipelines/` | [`report/2A202602952_LeTuanAnh.md`](../report/2A202602952_LeTuanAnh.md) |
+| 2 | Vũ Thường Tín | 2A202602955 | Artifact, đối chiếu kết quả và báo cáo; CP2–CP5 | `data/clean/`, `data/chroma/`, `data/eval/`, `data/quality/`, `data/results/`, `data/reports/`, `report/group_report.md` | [`report/2A202602955_VuThuongTin.md`](../report/2A202602955_VuThuongTin.md) |
+| 3 | Trần Quốc Bảo Long | 2A202602696 | Giao diện demo và hỗ trợ trình bày; CP6 | `ui/`, `script/run_ui.py`, `script/test_ui.py`, hướng dẫn UI trong `README.md` | Chưa có; cần Long tự hoàn thành `report/2A202602696_TranQuocBaoLong.md` |
 
-| STT | Họ và tên | MSSV | Email | Vai trò & Phân công công việc | Báo cáo cá nhân |
-|---:|---|---|---|---|---|
-| 1 | | | | Trưởng nhóm / Pipeline Integrator (`core/`, `phase1.py`, `corruption_flow.py`) | `report/<MSSV1>_HoTen.md` |
-| 2 | Lê Tuấn Anh | | | Data Foundation & Recovery (`crossref.py`, `cleaning.py`, raw data) | `report/<MSSV2>_HoTen.md` |
-| 3 | Trần Quốc Bảo Long | 2A202602696 | | RAG & Vector Index (`retrieval/index.py`, `embeddings.py`, ChromaDB) | `report/<MSSV3>_HoTen.md` |
-| 4 | | | | Observability & Evaluation (`quality.py` GX 1.x, `testset.py`, reporting) | `report/<MSSV4>_HoTen.md` |
+## Bằng chứng Git và ranh giới sở hữu
 
-*(Nếu nhóm có 3 hoặc 5-6 thành viên, xem bảng phân công chi tiết theo vai trò trong file `CHECKPOINTS.md`)*.
+| Thành viên | Commit tiêu biểu | Nội dung có thể đối chiếu |
+| --- | --- | --- |
+| Lê Tuấn Anh | `1629c3e`, `ad4e3d7`, `ea8202e` | Hoàn thiện 8 file của tầng dữ liệu/pipeline; viết báo cáo cá nhân và đưa về tên file theo MSSV. |
+| Vũ Thường Tín | `e608ed8`, `2aee2f9`, `ae93326` | Đưa artifact chạy pipeline vào Git, xác minh ba trạng thái và cập nhật báo cáo. |
+| Trần Quốc Bảo Long | `90d4c4d` | Thêm UI demo, server Python và bộ kiểm thử UI. |
 
----
+`src/core/`, `src/retrieval/` và `src/evaluation/metrics.py` đã có trong starter repo hoặc được sửa bởi commit khác; bảng trên không gán quyền tác giả các module đó cho ba thành viên nếu lịch sử commit không chứng minh. Báo cáo riêng mô tả phần việc mỗi người tự thực hiện; không dùng chung `report/individual_report.md` làm bài nộp cá nhân.
 
-## # Cá nhân
+## Cá nhân
 
-### ## HoVaTen1-MSSV1
-- **Vai trò:** Trưởng nhóm & Điều phối Pipeline.
-- **Công việc chi tiết đã hoàn thành:**
-  - Thiết lập cấu hình hệ thống `core/config.py` và đường dẫn artifacts `core/utils.py`.
-  - Kết nối luồng thực thi trong `src/pipelines/phase1.py` và `src/pipelines/corruption_flow.py`.
-  - Kiểm tra tính nhất quán của các artifacts và theo dõi Contributor tracking trên GitHub nhánh `main`.
-- **Điều học được / Đóng góp chính:**
-  - Hiểu sâu sắc về thiết kế Idempotent Pipeline và quản lý trạng thái luồng dữ liệu đa tầng.
+### Lê Tuấn Anh — 2A202602952
 
-### ## HoVaTen2-MSSV2
-- **Vai trò:** Phụ trách Ingestion, Làm sạch & Phục hồi dữ liệu.
-- **Công việc chi tiết đã hoàn thành:**
-  - Xây dựng module thu thập Crossref API với cơ chế Fallback offline trong `src/ingestion/crossref.py`.
-  - Chuẩn hóa schema, tính toán trường `age_days` và `text_for_embedding` trong `src/ingestion/cleaning.py`.
-  - Thực thi cơ chế Idempotent Repair phục hồi dữ liệu từ raw snapshot.
-- **Điều học được / Đóng góp chính:**
-  - Kỹ thuật truy vết nguồn gốc dữ liệu (Data Lineage) và bảo toàn raw snapshot trước khi biến đổi.
+- **Đóng góp:** Parse/fallback Crossref, cleaning và cột `text_for_embedding`, GX 1.x/freshness, benchmark 10 câu, suite 6 lỗi, orchestration baseline/corruption/repair và hai báo cáo pipeline. Xem commit `1629c3e` cùng [`báo cáo riêng`](../report/2A202602952_LeTuanAnh.md).
+- **Bàn giao:** Mã nguồn CP0–CP5 để các thành viên khác chạy và kiểm tra; artifact thực tế trong `data/` được commit bởi Tín.
+- **Điều học được được ghi trong báo cáo riêng:** Giữ raw snapshot và test set cố định để kiểm tra tính tái lập, dùng GX 1.x để phát hiện dữ liệu bẩn.
 
-### ## HoVaTen3-MSSV3
-- **Vai trò:** Phụ trách RAG, Vector Database & Embedding.
-- **Công việc chi tiết đã hoàn thành:**
-  - Quản lý mô hình embedding `sentence-transformers/all-MiniLM-L6-v2`.
-  - Nạp và quản lý 3 collection riêng biệt trong ChromaDB (`papers-baseline`, `papers-corrupted`, `papers-repaired`).
-  - Xây dựng QA Agent truy vấn ngữ cảnh chính xác theo tài liệu.
-- **Điều học được / Đóng góp chính:**
-  - Cách cô lập các không gian vector để so sánh khách quan giữa dữ liệu sạch và dữ liệu bị lỗi.
+### Vũ Thường Tín — 2A202602955
 
-### ## HoVaTen4-MSSV4
-- **Vai trò:** Phụ trách Data Observability & Benchmark Evaluation.
-- **Công việc chi tiết đã hoàn thành:**
-  - Thiết lập Quality Gate theo chuẩn mới **Great Expectations 1.x** và giám sát Freshness SLA trong `src/observability/quality.py`.
-  - Xây dựng bộ câu hỏi đánh giá chuẩn trong `src/evaluation/testset.py`.
-  - Đo lường và xuất bảng đối chiếu 3 trạng thái vào `data/reports/corruption_report.md`.
-- **Điều học được / Đóng góp chính:**
-  - Cách thiết lập hệ thống cảnh báo sớm chặn đứng hiện tượng Silent Failure trước khi dữ liệu vào serving layer.
+- **Đóng góp:** Đưa 47 artifact sạch/bẩn/phục hồi vào Git tại `e608ed8`; chạy lại hai entrypoint, kiểm tra Chroma 24/21/24 document, đối chiếu metrics với answers và lưu `data/reports/run_verification.md` tại `2aee2f9`; cập nhật báo cáo nhóm và cá nhân.
+- **Bàn giao:** Bộ artifact nhất quán, bảng metrics và [`báo cáo riêng`](../report/2A202602955_VuThuongTin.md). Không nhận quyền tác giả mã nguồn pipeline/retrieval.
+- **Điều học được:** Exit code 0, quality pass và LLM judge là ba khẳng định khác nhau; cần đọc answers và log thực tế trước khi kết luận.
+
+### Trần Quốc Bảo Long — 2A202602696
+
+- **Đóng góp:** Thiết kế UI demo bằng `ui/index.html`, `ui/style.css`, `ui/app.js`; tạo server `script/run_ui.py`, kiểm thử `script/test_ui.py` và tài liệu `ui/README.md` trong commit `90d4c4d`.
+- **Bàn giao:** Dashboard đọc artifact, hiển thị pipeline/quality/metrics và cho phép chạy hai pha từ giao diện. Đây là phần giao diện/demo, không phải quyền tác giả của `src/retrieval/`.
+- **Việc còn thiếu:** Long tự viết báo cáo vai trò cá nhân theo mẫu `report/individual_report.md` và lưu thành `report/2A202602696_TranQuocBaoLong.md` trước khi nộp.
+
+## Việc nhóm cần xác nhận trước khi nộp
+
+- [ ] Long hoàn thành báo cáo riêng và xác nhận mô tả vai trò của mình.
+- [ ] Cả ba thành viên kiểm tra commit xuất hiện trong GitHub Contributors của nhánh `main`.
+- [ ] Mỗi người tự nộp link repository trên VLearn LMS.

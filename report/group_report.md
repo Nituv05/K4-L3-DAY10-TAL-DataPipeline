@@ -5,7 +5,7 @@
 | Thông tin | Nội dung |
 | --- | --- |
 | Khóa/Lớp | K4-L3-DAY10 |
-| Tên nhóm | TAL (suy ra từ tên repository; nhóm cần xác nhận) |
+| Tên nhóm | TAL |
 | Repository | https://github.com/Nituv05/K4-L3-DAY10-TAL-DataPipeline |
 | Ngày cập nhật kết quả kỹ thuật | 2026-09-25 |
 
@@ -13,14 +13,15 @@
 
 | Thành viên | MSSV | Phần việc có bằng chứng | Trạng thái xác nhận |
 | --- | --- | --- | --- |
-| Vũ Thường Tín | 2A202602955 | `e608ed8`: đưa 47 artifact vào Git; `2aee2f9`: xác minh Chroma/metrics, cập nhật báo cáo | Có báo cáo tại `report/individual_report.md` |
-| Các thành viên khác | Cần nhóm bổ sung | Đối chiếu commit `1629c3e`, `77a0fda`, `35137ea` và lịch sử liên quan trước khi gán owner | Chưa xác nhận danh sách/MSSV |
+| Lê Tuấn Anh | 2A202602952 | `1629c3e`: hoàn thiện ingestion, cleaning, GX, test set, corruption, orchestration và reporting | `report/2A202602952_LeTuanAnh.md` |
+| Vũ Thường Tín | 2A202602955 | `e608ed8`: đưa 47 artifact vào Git; `2aee2f9`: xác minh Chroma/metrics và cập nhật báo cáo | `report/2A202602955_VuThuongTin.md` |
+| Trần Quốc Bảo Long | 2A202602696 | `90d4c4d`: xây UI demo, server chạy cục bộ, kiểm thử và hướng dẫn | Chưa có báo cáo riêng; Long cần tự hoàn thành |
 
-Nhóm cần hoàn thành bảng phân công chính thức trong `docs/TEAM.md` và báo cáo cá nhân riêng của từng người. Không suy ra MSSV hoặc quyền tác giả chỉ từ tên tài khoản Git.
+Phân công chi tiết nằm trong `docs/TEAM.md`. Báo cáo cá nhân của Long còn thiếu; `report/individual_report.md` là mẫu dùng chung. Quyền tác giả trong bảng dựa trên commit và file thực tế, không suy từ tên package.
 
 ## 2. Tóm tắt kết quả
 
-Pipeline dùng 24 metadata bài báo từ raw snapshot Crossref, làm sạch văn bản và tạo `text_for_embedding` gồm năm phần. Mô hình `sentence-transformers/all-MiniLM-L6-v2` tạo vector cho ChromaDB. Bộ benchmark có 10 câu hỏi thuộc bốn loại: summary, authors, date và categories. Baseline đạt Retrieval Hit Rate 1.0000 và mean Token F1 1.0000. Sáu thao tác corruption được áp dụng cùng lúc, làm dữ liệu còn 21 dòng. Great Expectations báo fail ở tính duy nhất của `paper_id` và độ dài `summary`; freshness cũng fail vì 6/21 bản ghi quá 180 ngày. Hit Rate giảm xuống 0.5000, Token F1 xuống 0.5788. Repair đọc lại raw records, tạo 24 dòng, đưa quality và freshness về pass; hai chỉ số đánh giá phục hồi đúng mức baseline. Cả hai entrypoint đã được chạy lại với exit code 0; chi tiết ở `data/reports/run_verification.md`. Điểm judge hiện dùng heuristic dự phòng do Gemini evaluator không khả dụng; Ragas được bỏ qua. Agent demo không chạy thành công vì provider trả 404 cho `gemini-2.5-flash`. Những giới hạn này phải được nêu khi trình diễn kết quả.
+Pipeline dùng 24 metadata bài báo từ raw snapshot Crossref, làm sạch văn bản và tạo `text_for_embedding` gồm năm phần. Mô hình `sentence-transformers/all-MiniLM-L6-v2` tạo vector cho ChromaDB. Bộ benchmark có 10 câu hỏi thuộc bốn loại: summary, authors, date và categories. Baseline đạt Retrieval Hit Rate 1.0000 và mean Token F1 1.0000. Sáu thao tác corruption được áp dụng cùng lúc, làm dữ liệu còn 21 dòng. Great Expectations báo fail ở tính duy nhất của `paper_id` và độ dài `summary`; freshness cũng fail vì 6/21 bản ghi quá 180 ngày. Hit Rate giảm xuống 0.5000, Token F1 xuống 0.5788. Repair đọc lại raw records, tạo 24 dòng, đưa quality và freshness về pass; hai chỉ số đánh giá phục hồi đúng mức baseline. Bảo Long xây UI cục bộ để trình bày các artifact và gọi hai entrypoint. Hai entrypoint đã được chạy lại với exit code 0; chi tiết ở `data/reports/run_verification.md`. Điểm judge hiện dùng heuristic dự phòng do Gemini evaluator không khả dụng; Ragas được bỏ qua. Agent demo không chạy thành công vì provider trả 404 cho `gemini-2.5-flash`. Những giới hạn này phải được nêu khi trình diễn kết quả.
 
 ## 3. Kiến trúc và luồng dữ liệu
 
@@ -32,14 +33,15 @@ Crossref snapshot -> raw records -> cleaning -> GX và freshness
     -> báo cáo đối chiếu
 ```
 
-| Khối | Input | Xử lý | Output |
-| --- | --- | --- | --- |
-| Ingestion | `data/raw/crossref_response.json` hoặc Crossref API | Parse/fallback, lưu raw records | `data/raw/crossref_records.json` |
-| Cleaning | Raw records | Khử markup, chuẩn hóa schema, deduplicate, tạo cột dẫn xuất | `data/clean/papers_clean.csv` và JSON |
-| Observability | DataFrame từng trạng thái | GX 1.x và freshness SLA | `data/quality/*.json` |
-| Embedding/index | `text_for_embedding` | MiniLM, ba collection Chroma riêng | `data/chroma/`, `data/embeddings/` |
-| Evaluation | Cùng 10 câu hỏi, index từng trạng thái | Hit Rate, Token F1, heuristic judge khi LLM lỗi | `data/results/*_answers.json`, `*_metrics.json` |
-| Repair/reporting | Raw records, metrics và quality | Dựng lại dữ liệu, lập bảng đối chiếu | `data/reports/*.md` |
+| Khối | Input | Xử lý | Output | Owner có bằng chứng |
+| --- | --- | --- | --- | --- |
+| Ingestion | `data/raw/crossref_response.json` hoặc Crossref API | Parse/fallback, lưu raw records | `data/raw/crossref_records.json` | Lê Tuấn Anh, `1629c3e` |
+| Cleaning | Raw records | Khử markup, chuẩn hóa schema, deduplicate, tạo cột dẫn xuất | `data/clean/papers_clean.csv` và JSON | Lê Tuấn Anh, `1629c3e` |
+| Observability | DataFrame từng trạng thái | GX 1.x và freshness SLA | `data/quality/*.json` | Lê Tuấn Anh viết module; Tín lưu artifact |
+| Embedding/index | `text_for_embedding` | MiniLM, ba collection Chroma riêng | `data/chroma/`, `data/embeddings/` | Mã retrieval của starter/commit khác; Tín lưu index artifact |
+| Evaluation | Cùng 10 câu hỏi, index từng trạng thái | Hit Rate, Token F1, heuristic judge khi LLM lỗi | `data/results/*_answers.json`, `*_metrics.json` | Lê Tuấn Anh viết test set; Tín lưu và đối chiếu kết quả |
+| Repair/reporting | Raw records, metrics và quality | Dựng lại dữ liệu, lập bảng đối chiếu | `data/reports/*.md` | Lê Tuấn Anh viết pipeline; Tín xác minh báo cáo |
+| UI demo | Artifact trong `data/` | Dashboard cục bộ, gọi hai entrypoint từ giao diện | `ui/`, `script/run_ui.py`, `script/test_ui.py` | Trần Quốc Bảo Long, `90d4c4d` |
 
 ## 4. Cách tái hiện kết quả
 
@@ -58,12 +60,17 @@ Crossref snapshot -> raw records -> cleaning -> GX và freshness
 python -m pip install -e .
 .venv/bin/python script/run_phase1.py
 .venv/bin/python script/run_corruption_flow.py
+python script/run_ui.py
 ```
 
 | Lệnh | Kết quả đã quan sát | Bằng chứng |
 | --- | --- | --- |
 | `script/run_phase1.py` | Exit code 0, in `PHASE 1 HOAN TAT.` | `data/reports/run_verification.md`, baseline metrics/report |
 | `script/run_corruption_flow.py` | Exit code 0, in `PHASE 2 HOAN TAT.` | `data/reports/run_verification.md`, ba metrics và comparison report |
+| `.venv/bin/python -m unittest discover -s script -p test_ui.py` | 2/2 test pass trên Python 3.12.9 | Test HTTP assets, snapshot, quyền truy cập và khóa job bằng mock; không gọi LLM |
+| `node --check ui/app.js` | Pass | Kiểm tra cú pháp JavaScript |
+
+Lệnh UI mở dashboard cục bộ tại `http://127.0.0.1:8765`; UI đọc artifact đã lưu và chỉ gọi pipeline khi người dùng bấm nút chạy. Xem `ui/README.md` để trình diễn và dừng server bằng Ctrl+C. Kết quả hai entrypoint ở bảng được xác minh từ terminal, không suy ra từ việc UI hiển thị số liệu.
 
 Lần thử pha 1 trong sandbox gặp lỗi DNS khi Hugging Face kiểm tra model, nên hai lệnh thành công ở bảng là lần chạy lại ngoài sandbox. Không có API key nào được ghi trong báo cáo.
 
@@ -156,6 +163,7 @@ Corruption → GX/freshness chuyển sang fail → retrieval và Token F1 giảm
 | GX fail nhưng vẫn index | Luồng này chưa phải quality gate chặn serving | Tách chế độ demo corruption và production; ở production dừng trước index khi `gate_passed=False`. |
 | Manifest lưu đường dẫn Chroma tuyệt đối | Nạp trực tiếp trên máy khác có thể lỗi | Dùng đường dẫn theo project root; kiểm tra trên checkout sạch. |
 | Chưa tách từng corruption | Chưa quy được mức suy giảm cho từng loại lỗi | Ablation từng lỗi trên cùng test set, lưu metrics riêng. |
+| UI đọc artifact theo trạng thái đã lưu | Màn hình không tự chứng minh lần chạy pipeline hoặc tính nhất quán giữa nhiều file | Kiểm tra timestamp/exit code và đối chiếu `data/reports/run_verification.md`; không chạy hai job đồng thời. |
 
 ## 13. Checklist trước khi nộp
 
@@ -163,8 +171,10 @@ Corruption → GX/freshness chuyển sang fail → retrieval và Token F1 giảm
 - [x] Baseline, corrupted, repaired dùng cùng 10 câu hỏi; metrics khớp answers.
 - [x] Quality/freshness conclusions khớp JSON tương ứng.
 - [x] Giới hạn heuristic judge, Ragas và agent demo được nêu rõ.
-- [ ] Nhóm xác nhận tên, MSSV, ownership từng người và cập nhật `docs/TEAM.md`.
-- [ ] Mỗi thành viên có báo cáo riêng đúng tên file theo quy định nộp bài.
+- [x] UI test 2/2 pass và JavaScript qua kiểm tra cú pháp.
+- [x] Tên, MSSV và phần việc có bằng chứng của ba thành viên đã được ghi trong `docs/TEAM.md`.
+- [ ] Long tự hoàn thành báo cáo riêng `report/2A202602696_TranQuocBaoLong.md`; Tín và Lê đã có file theo MSSV.
 - [x] Commit `2aee2f9` chứa SQLite cùng ba segment hiện hành, metrics và báo cáo; đã push lên `origin/tinvt`.
-- [ ] Đưa commit `2aee2f9` từ `tinvt` vào nhánh nộp `main`.
+- [x] Commit artifact `2aee2f9` đã vào `main` qua PR #4; phần cập nhật báo cáo hiện ở nhánh `tinvt`.
+- [ ] Merge phần cập nhật báo cáo từ `tinvt` vào nhánh nộp `main` sau khi nhóm duyệt.
 - [ ] Kiểm tra Contributors của nhánh mặc định và từng người nộp link lên LMS.
