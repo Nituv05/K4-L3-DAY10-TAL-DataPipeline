@@ -1,6 +1,6 @@
 # Corruption & Repair Report - Doi Chieu 3 Trang Thai (Day 10)
 
-> Sinh tu dong luc: `2026-09-25T08:28:25.445065+00:00`
+> Sinh tu dong luc: `2026-09-25T09:00:41.333302+00:00`
 
 ## 1. Bang so sanh hieu nang RAG
 

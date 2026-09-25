@@ -1,6 +1,6 @@
 # Phase 1 Report - Baseline Data Pipeline (Day 10)
 
-> Sinh tu dong luc: `2026-09-25T08:15:11.963262+00:00`
+> Sinh tu dong luc: `2026-09-25T08:57:47.904145+00:00`
 
 ## 1. Nguon du lieu & Lineage
 
@@ -18,7 +18,7 @@
 | top_k | 4 |
 | llm_provider | gemini |
 | llm_model | gemini-2.5-flash |
-| run_date | 2026-09-25T08:13:00.803031+00:00 |
+| run_date | 2026-09-25T08:57:29.042343+00:00 |
 
 ## 2. Chi so danh gia RAG (Baseline)
 
