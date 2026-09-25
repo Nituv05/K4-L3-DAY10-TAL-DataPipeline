@@ -13,7 +13,7 @@
 
 | Thành viên | MSSV | Phần việc có bằng chứng | Trạng thái xác nhận |
 | --- | --- | --- | --- |
-| Vũ Thường Tín | 2A202602955 | `e608ed8`: đưa 47 artifact vào Git; `2aee2f9`: xác minh Chroma/metrics, cập nhật báo cáo | Có báo cáo tại `report/individual_report.md` |
+| Vũ Thường Tín | 2A202602955 | `e608ed8`: đưa 47 artifact vào Git; `2aee2f9`: xác minh Chroma/metrics, cập nhật báo cáo | Có báo cáo tại `report/2A202602955_VuThuongTin.md` |
 | Các thành viên khác | Cần nhóm bổ sung | Đối chiếu commit `1629c3e`, `77a0fda`, `35137ea` và lịch sử liên quan trước khi gán owner | Chưa xác nhận danh sách/MSSV |
 
 Nhóm cần hoàn thành bảng phân công chính thức trong `docs/TEAM.md` và báo cáo cá nhân riêng của từng người. Không suy ra MSSV hoặc quyền tác giả chỉ từ tên tài khoản Git.
