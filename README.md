@@ -188,7 +188,7 @@ cp .env.example .env
 Mở file `.env` và điền API Key tương ứng (mặc định hỗ trợ `gemini`, `openai`, `anthropic`, `ollama`):
 ```dotenv
 LLM_PROVIDER=gemini
-LLM_MODEL=gemini-2.5-flash
+LLM_MODEL=gemini-3.5-flash-lite
 GOOGLE_API_KEY=your_gemini_api_key_here
 ```
 

@@ -1,6 +1,6 @@
 # Phase 1 Report - Baseline Data Pipeline (Day 10)
 
-> Sinh tu dong luc: `2026-09-25T08:57:47.904145+00:00`
+> Sinh tu dong luc: `2026-09-25T11:21:17.973969+00:00`
 
 ## 1. Nguon du lieu & Lineage
 
@@ -17,8 +17,8 @@
 | collection_name | papers-baseline |
 | top_k | 4 |
 | llm_provider | gemini |
-| llm_model | gemini-2.5-flash |
-| run_date | 2026-09-25T08:57:29.042343+00:00 |
+| llm_model | gemini-3.5-flash-lite |
+| run_date | 2026-09-25T11:20:57.750495+00:00 |
 
 ## 2. Chi so danh gia RAG (Baseline)
 
@@ -29,7 +29,7 @@
 | Judge Accuracy | 1.0000 |
 | Judge Score (1-5) | 5 |
 | So cau hoi danh gia | 10 |
-| Judge source | heuristic_fallback |
+| Judge source | llm |
 
 **Ragas:** `skipped=Set RUN_RAGAS=1 to enable the slower Ragas pass.`
 

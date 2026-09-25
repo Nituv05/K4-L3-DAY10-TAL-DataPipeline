@@ -63,7 +63,7 @@ Phạm vi ban đầu của tôi là **các output** của luồng này; sau đó
 | Input đánh giá | `data/eval/test_set.json`, gồm câu hỏi, đáp án và `ground_truth_doc_ids`. |
 | Output | Clean/corrupted/repaired data, Chroma, embeddings manifest, quality/freshness reports, answers, metrics, Markdown reports. |
 | Module tạo output | `src/pipelines/phase1.py`, `src/pipelines/corruption_flow.py` và các module được chúng gọi. |
-| Điều kiện cần kiểm soát | Artifact không khớp nhau; đường dẫn manifest phải theo project root; phải ghi đúng khi Judge dùng heuristic fallback. |
+| Điều kiện cần kiểm soát | Artifact không khớp nhau; đường dẫn manifest phải theo project root; phải kiểm tra `judge_source` để biết lần chạy dùng LLM hay fallback. |
 
 ### Cách xác minh khi lập báo cáo
 
@@ -87,10 +87,10 @@ Tôi đã đối chiếu các JSON answers, quality, freshness và corruption lo
 
 ## 6. Vấn đề phát hiện và cách xử lý
 
-- **Triệu chứng ban đầu:** Ba `data/embeddings/papers_embeddings*.json` lưu `persist_path` tuyệt đối. Cả 30 verdict trong answers ghi `Fallback heuristic judge used because the LLM evaluator was unavailable.`; Ragas có trạng thái `skipped`.
-- **Cách xử lý:** Commit `7951b12` chuyển manifest sang `data/chroma`, cho loader phân giải theo project root, đổi đường dẫn trong báo cáo pha 1 và ghi `judge_source=heuristic_fallback` trong metrics/báo cáo pipeline.
-- **Xác minh:** Đã kiểm tra manifest khi đặt ở một project root tạm, kiểm tra cú pháp Python, đối chiếu metrics với 30 answers; nhóm xác nhận đã kiểm thử hai entrypoint trên bản nộp.
-- **Giới hạn còn lại:** Điểm Judge hiện tại vẫn là heuristic, không phải LLM chấm trực tiếp; Ragas vẫn `skipped`. Nếu muốn công bố kết quả LLM/Ragas, cần chạy lại với evaluator hoạt động và lưu artifact mới.
+- **Triệu chứng ban đầu:** Ba `data/embeddings/papers_embeddings*.json` lưu `persist_path` tuyệt đối. Lần chạy cũ có 30 verdict dùng heuristic fallback do `gemini-2.5-flash` trả 404; Ragas có trạng thái `skipped`.
+- **Cách xử lý:** Commit `7951b12` chuyển manifest sang `data/chroma`, cho loader phân giải theo project root và ghi rõ `judge_source`. Sau đó nhóm chuyển sang `gemini-3.5-flash-lite`, sửa định dạng câu trả lời Agent và chạy lại hai entrypoint bằng Gemini thật.
+- **Xác minh:** Bản chạy mới có hai exit code 0, 30/30 verdict mang `judge_source=llm` và không có reasoning fallback; `data/results/agent_demo_answers.json` có hai câu trả lời văn bản. Số liệu được đối chiếu trong `data/reports/run_verification.md`.
+- **Giới hạn còn lại:** Ragas vẫn `skipped`; Hit Rate baseline có exact title lookup nên chưa đo riêng semantic retrieval. Điểm Judge có thể thay đổi giữa các lần gọi LLM.
 
 ## 7. Hiểu biết về luồng end-to-end
 
@@ -106,8 +106,8 @@ Tôi đã đối chiếu các JSON answers, quality, freshness và corruption lo
 | --- | ---: | ---: | ---: | --- |
 | `retrieval_hit_rate` | 1.0000 | 0.5000 | 1.0000 | Mất 5/10 hit rồi phục hồi đủ 10/10. |
 | `mean_token_f1` | 1.0000 | 0.5788 | 1.0000 | Chất lượng câu trả lời giảm rồi phục hồi. |
-| `judge_accuracy` | 1.0000 | 0.6000 | 1.0000 | Đây là heuristic judge dự phòng theo answers JSON. |
-| `mean_judge_score` | 5.0 | 3.2 | 5.0 | Cùng giới hạn heuristic như trên. |
+| `judge_accuracy` | 1.0000 | 0.6000 | 1.0000 | Cả 30 verdict của lần chạy mới dùng LLM Judge. |
+| `mean_judge_score` | 5.0 | 3.4 | 5.0 | Điểm Gemini của trạng thái bẩn thấp hơn baseline. |
 | GX quality | Pass | Fail: 2 expectation | Pass | Trạng thái bẩn vi phạm uniqueness của `paper_id` và độ dài `summary`. |
 | Freshness | Pass: 1/24 cũ | Fail: 6/21 cũ | Pass: 1/24 cũ | Tỷ lệ quá hạn 4.17% → 28.57% → 4.17%. |
 
@@ -136,6 +136,7 @@ Nếu có thêm thời gian, tôi sẽ đánh giá tách riêng sáu loại corr
 - [x] Xác nhận commit `e608ed8` đã được đưa vào `origin/main` qua merge commit `1d17cdc`.
 - [x] Nhóm đã xác nhận phần Git/Contributors trên nhánh mặc định.
 - [x] Hai entrypoint đã chạy lại với exit code 0; bằng chứng ở `data/reports/run_verification.md`.
+- [x] Agent demo có hai câu trả lời và 30/30 Judge verdict dùng LLM thật, không dùng fallback.
 - [x] Nhóm xác nhận đã kiểm thử bản nộp và từng thành viên đã tự nộp link repository trên VLearn LMS.
 
 **Họ và tên:** Vũ Thường Tín

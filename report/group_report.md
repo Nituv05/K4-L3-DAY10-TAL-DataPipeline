@@ -21,7 +21,7 @@ Phân công chi tiết nằm trong `docs/TEAM.md`. Cả ba báo cáo cá nhân �
 
 ## 2. Tóm tắt kết quả
 
-Pipeline dùng 24 metadata bài báo từ raw snapshot Crossref, làm sạch văn bản và tạo `text_for_embedding` gồm năm phần. Mô hình `sentence-transformers/all-MiniLM-L6-v2` tạo vector cho ChromaDB. Bộ benchmark có 10 câu hỏi thuộc bốn loại: summary, authors, date và categories. Baseline đạt Retrieval Hit Rate 1.0000 và mean Token F1 1.0000. Sáu thao tác corruption được áp dụng cùng lúc, làm dữ liệu còn 21 dòng. Great Expectations báo fail ở tính duy nhất của `paper_id` và độ dài `summary`; freshness cũng fail vì 6/21 bản ghi quá 180 ngày. Hit Rate giảm xuống 0.5000, Token F1 xuống 0.5788. Repair đọc lại raw records, tạo 24 dòng, đưa quality và freshness về pass; hai chỉ số đánh giá phục hồi đúng mức baseline. Bảo Long xây UI cục bộ để trình bày các artifact và gọi hai entrypoint. Hai entrypoint đã được chạy lại với exit code 0; chi tiết ở `data/reports/run_verification.md`. Điểm judge hiện dùng heuristic dự phòng do Gemini evaluator không khả dụng; Ragas được bỏ qua. Agent demo không chạy thành công vì provider trả 404 cho `gemini-2.5-flash`. Những giới hạn này phải được nêu khi trình diễn kết quả.
+Pipeline dùng 24 metadata bài báo từ raw snapshot Crossref, làm sạch văn bản và tạo `text_for_embedding` gồm năm phần. Mô hình `sentence-transformers/all-MiniLM-L6-v2` tạo vector cho ChromaDB. Bộ benchmark có 10 câu hỏi thuộc bốn loại: summary, authors, date và categories. Baseline đạt Retrieval Hit Rate 1.0000 và mean Token F1 1.0000. Sáu thao tác corruption được áp dụng cùng lúc, làm dữ liệu còn 21 dòng. Great Expectations báo fail ở tính duy nhất của `paper_id` và độ dài `summary`; freshness cũng fail vì 6/21 bản ghi quá 180 ngày. Hit Rate giảm xuống 0.5000, Token F1 xuống 0.5788. Repair đọc lại raw records, tạo 24 dòng, đưa quality và freshness về pass; hai chỉ số đánh giá phục hồi đúng mức baseline. Bảo Long xây UI cục bộ để trình bày các artifact và gọi hai entrypoint. Hai entrypoint đã chạy lại với exit code 0 trên `gemini-3.5-flash-lite`; cả 30 verdict được chấm bằng LLM thật và Agent demo lưu hai câu trả lời. Judge Score của trạng thái bẩn là 3.4. Ragas vẫn được bỏ qua. Chi tiết ở `data/reports/run_verification.md`.
 
 ## 3. Kiến trúc và luồng dữ liệu
 
@@ -39,7 +39,7 @@ Crossref snapshot -> raw records -> cleaning -> GX và freshness
 | Cleaning | Raw records | Khử markup, chuẩn hóa schema, deduplicate, tạo cột dẫn xuất | `data/clean/papers_clean.csv` và JSON | Lê Tuấn Anh, `1629c3e` |
 | Observability | DataFrame từng trạng thái | GX 1.x và freshness SLA | `data/quality/*.json` | Lê Tuấn Anh viết module; Tín lưu artifact |
 | Embedding/index | `text_for_embedding` | MiniLM, ba collection Chroma riêng | `data/chroma/`, `data/embeddings/` | Mã retrieval của starter/commit khác; Tín lưu index artifact và sửa đường dẫn manifest |
-| Evaluation | Cùng 10 câu hỏi, index từng trạng thái | Hit Rate, Token F1, heuristic judge khi LLM lỗi | `data/results/*_answers.json`, `*_metrics.json` | Lê Tuấn Anh viết test set; Tín lưu và đối chiếu kết quả |
+| Evaluation | Cùng 10 câu hỏi, index từng trạng thái | Hit Rate, Token F1, LLM Judge có cơ chế fallback khi LLM lỗi | `data/results/*_answers.json`, `*_metrics.json` | Lê Tuấn Anh viết test set; Tín lưu và đối chiếu kết quả |
 | Repair/reporting | Raw records, metrics và quality | Dựng lại dữ liệu, lập bảng đối chiếu | `data/reports/*.md` | Lê Tuấn Anh viết pipeline; Tín xác minh báo cáo |
 | UI demo | Artifact trong `data/` | Dashboard cục bộ, gọi hai entrypoint từ giao diện | `ui/`, `script/run_ui.py`, `script/test_ui.py` | Trần Quốc Bảo Long, `90d4c4d` |
 
@@ -48,7 +48,7 @@ Crossref snapshot -> raw records -> cleaning -> GX và freshness
 | Cấu hình | Giá trị dùng trong lần chạy |
 | --- | --- |
 | Python | 3.12.9 trong `.venv` |
-| LLM provider/model | `gemini` / `gemini-2.5-flash` theo báo cáo pha 1; model trả 404 ở demo |
+| LLM provider/model | `gemini` / `gemini-3.5-flash-lite`; 30 verdict và 2 câu Agent demo dùng model này |
 | Embedding | `sentence-transformers/all-MiniLM-L6-v2` |
 | Raw records | 24 từ snapshot đã lưu; không bật `REFRESH_SOURCE` |
 | Retrieval `top_k` | 4 |
@@ -72,7 +72,7 @@ python script/run_ui.py
 
 Lệnh UI mở dashboard cục bộ tại `http://127.0.0.1:8765`; UI đọc artifact đã lưu và chỉ gọi pipeline khi người dùng bấm nút chạy. Xem `ui/README.md` để trình diễn và dừng server bằng Ctrl+C. Kết quả hai entrypoint ở bảng được xác minh từ terminal, không suy ra từ việc UI hiển thị số liệu.
 
-Lần thử pha 1 trong sandbox gặp lỗi DNS khi Hugging Face kiểm tra model, nên hai lệnh thành công ở bảng là lần chạy lại ngoài sandbox. Không có API key nào được ghi trong báo cáo.
+Hai lệnh thành công ở bảng được chạy trong bản sao tạm với mạng cho phép gọi Gemini, rồi đối chiếu artifact trước khi đưa về repo. Không có API key nào được ghi trong báo cáo hoặc commit.
 
 ## 5. Ingestion, cleaning và data contract
 
@@ -110,8 +110,8 @@ Raw, clean CSV/JSON, embedding manifest, Chroma collection, test set, baseline m
 | --- | ---: | --- |
 | `retrieval_hit_rate` | 1.0000 | Có exact title lookup trong QA benchmark. |
 | `mean_token_f1` | 1.0000 | So khớp token của câu trả lời với ground truth. |
-| `judge_accuracy` | 1.0000 | Heuristic dự phòng, không phải LLM judge trực tiếp. |
-| `mean_judge_score` | 5.0000 | Cùng giới hạn heuristic. |
+| `judge_accuracy` | 1.0000 | `judge_source=llm`; cả 10 verdict baseline do Gemini trả về. |
+| `mean_judge_score` | 5.0000 | Điểm Judge của lần chạy Gemini đã lưu. |
 | Ragas | Skipped | `RUN_RAGAS` không được bật. |
 
 ## 8. Data quality và freshness
@@ -139,8 +139,8 @@ Freshness đo số dòng có `age_days > 180`. Baseline là 1/24 = 4.17% (pass),
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Retrieval Hit Rate | 1.0000 | 0.5000 | 1.0000 | -0.5000 | Đủ mức baseline |
 | Mean Token F1 | 1.0000 | 0.5788 | 1.0000 | -0.4212 | Đủ mức baseline |
-| Judge Accuracy (heuristic) | 1.0000 | 0.6000 | 1.0000 | -0.4000 | Đủ mức baseline |
-| Judge Score (heuristic) | 5.0 | 3.2 | 5.0 | -1.8 | Đủ mức baseline |
+| Judge Accuracy (LLM) | 1.0000 | 0.6000 | 1.0000 | -0.4000 | Đủ mức baseline |
+| Judge Score (LLM) | 5.0 | 3.4 | 5.0 | -1.6 | Đủ mức baseline |
 | GX | Pass | Fail | Pass | 2 expectation fail | Pass |
 | Freshness | Pass | Fail | Pass | 4.17% → 28.57% quá hạn | 4.17% quá hạn |
 
@@ -148,16 +148,16 @@ Corruption → GX/freshness chuyển sang fail → retrieval và Token F1 giảm
 
 ## 11. Vấn đề tích hợp quan trọng
 
-- **Triệu chứng:** Pha 1 chạy xong nhưng agent demo in thông báo bị bỏ qua; judge trong answers dùng fallback.
-- **Nguyên nhân quan sát được:** Gemini provider trả `404 NOT_FOUND` cho model `gemini-2.5-flash` trong lần chạy demo. Lệnh đầu trong sandbox cũng gặp lỗi DNS tới Hugging Face.
-- **Cách xử lý trong lần nghiệm thu:** Chạy lại hai entrypoint ngoài sandbox để model embedding tải được; giữ nguyên cấu hình khi đối chiếu dữ liệu, ghi rõ Gemini demo và LLM judge chưa thành công. Chưa thay model hoặc bịa số liệu LLM.
-- **Xác minh:** Hai exit code 0, `data/reports/run_verification.md`, và `reasoning` trong 30 answers JSON.
+- **Triệu chứng ban đầu:** Model `gemini-2.5-flash` trả `404 NOT_FOUND` cho API key của nhóm; Agent demo bị bỏ qua và Judge dùng fallback.
+- **Nguyên nhân đã xác minh:** Gemini API trả model 2.5 không còn mở cho tài khoản mới. `gemini-3.5-flash-lite` trả HTTP 200 với cùng API key.
+- **Cách xử lý:** Đổi model mặc định và `.env.example` sang `gemini-3.5-flash-lite`; sửa Agent để lấy văn bản từ content block của LangChain; chạy lại hai entrypoint bằng Gemini thật.
+- **Xác minh:** Hai exit code 0, 30/30 verdict có `judge_source=llm` và không có reasoning fallback; `agent_demo_answers.json` có hai câu trả lời văn bản. Xem `data/reports/run_verification.md`.
 
 ## 12. Giới hạn và hướng cải thiện
 
 | Giới hạn | Ảnh hưởng | Cách cải thiện có thể kiểm chứng |
 | --- | --- | --- |
-| Gemini model cấu hình trả 404; judge fallback, demo không có output | Không có bằng chứng LLM judge/agent demo thực | Chọn model được tài khoản hỗ trợ, chạy lại, kiểm tra `reasoning` và file demo thực tế. |
+| Truy cập model phụ thuộc tài khoản và quota Gemini | Chạy lại ở tài khoản khác có thể cần model được cấp quyền | Kiểm tra model bằng Gemini API; đối chiếu `judge_source` và file Agent demo sau khi chạy. |
 | Ragas skipped | Chưa có faithfulness/context metrics | Bật `RUN_RAGAS=1` khi evaluator sẵn sàng, lưu kết quả hoặc lỗi nguyên văn. |
 | Exact title lookup trong benchmark | Hit Rate baseline không đo riêng semantic retrieval | Thêm câu hỏi paraphrase không chứa exact title; so sánh metrics. |
 | GX fail nhưng vẫn index | Luồng này chưa phải quality gate chặn serving | Tách chế độ demo corruption và production; ở production dừng trước index khi `gate_passed=False`. |
@@ -170,11 +170,11 @@ Corruption → GX/freshness chuyển sang fail → retrieval và Token F1 giảm
 - [x] Hai entrypoint đã chạy lại với exit code 0; số liệu khớp artifacts trong lần kiểm tra.
 - [x] Baseline, corrupted, repaired dùng cùng 10 câu hỏi; metrics khớp answers.
 - [x] Quality/freshness conclusions khớp JSON tương ứng.
-- [x] Giới hạn heuristic judge, Ragas và agent demo được nêu rõ.
+- [x] 30/30 verdict dùng LLM thật và Agent demo có hai câu trả lời; giới hạn Ragas được nêu rõ.
 - [x] UI test 2/2 pass và JavaScript qua kiểm tra cú pháp.
 - [x] Tên, MSSV và phần việc có bằng chứng của ba thành viên đã được ghi trong `docs/TEAM.md`.
 - [x] Cả ba báo cáo cá nhân theo MSSV đã có trên `main`, gồm báo cáo Long tại commit `ba94b77`.
-- [x] Manifest Chroma và báo cáo pha 1 dùng đường dẫn theo project root; báo cáo pipeline ghi rõ judge đang dùng heuristic fallback.
+- [x] Manifest Chroma và báo cáo pha 1 dùng đường dẫn theo project root; báo cáo pipeline ghi rõ `judge_source=llm`.
 - [x] Commit `2aee2f9` chứa SQLite cùng ba segment hiện hành, metrics và báo cáo; đã push lên `origin/tinvt`.
 - [x] Commit artifact `2aee2f9` đã vào `main` qua PR #4; phần cập nhật báo cáo `0ba2944` đã vào `main` qua PR #6.
 - [x] Theo xác nhận của nhóm, cả ba thành viên đã hoàn tất phần Git/Contributors trên nhánh `main`.

@@ -39,8 +39,8 @@ Các số liệu dưới đây được đối chiếu từ artifacts hiện có
 | Số câu hỏi benchmark | 10 | 10 | 10 |
 | Retrieval Hit Rate | 1.0000 | 0.5000 | 1.0000 |
 | Mean Token F1 | 1.0000 | 0.5788 | 1.0000 |
-| Judge Accuracy — heuristic dự phòng | 1.0000 | 0.6000 | 1.0000 |
-| Mean Judge Score — heuristic dự phòng | 5.0 | 3.2 | 5.0 |
+| Judge Accuracy — LLM | 1.0000 | 0.6000 | 1.0000 |
+| Mean Judge Score — LLM | 5.0 | 3.4 | 5.0 |
 | Great Expectations | PASS | FAIL | PASS |
 | Số expectation thất bại / tổng số | 0/6 | 2/6 | 0/6 |
 | Số bản ghi quá 180 ngày | 1/24 | 6/21 | 1/24 |
@@ -147,7 +147,7 @@ Nếu tiếp tục phát triển, tôi sẽ ưu tiên bổ sung nhãn phân bi�
 - [x] Có commit `90d4c4d` làm bằng chứng mã nguồn UI.
 - [x] Số liệu data được dẫn từ artifacts của nhóm, không nhận là kết quả cá nhân tự tạo.
 - [x] Phân biệt kiểm tra UI với bằng chứng chạy pipeline end-to-end của nhóm.
-- [x] Nêu giới hạn heuristic judge, Ragas và agent demo.
+- [x] Đối chiếu kết quả Judge dùng LLM trong artifact mới; Ragas vẫn được bỏ qua.
 - [x] Báo cáo không chứa API key hoặc secret.
 - [x] Đồng bộ phân công trong `docs/TEAM.md` với vai trò UI thực tế; bảng hiện còn ghi vai trò RAG & Vector Index cho tôi.
 - [x] Kiểm tra hiển thị đóng góp trên GitHub Contributors và tự nộp link repository lên VLearn LMS.

@@ -1,6 +1,6 @@
 # Corruption & Repair Report - Doi Chieu 3 Trang Thai (Day 10)
 
-> Sinh tu dong luc: `2026-09-25T09:00:41.333302+00:00`
+> Sinh tu dong luc: `2026-09-25T11:22:50.655572+00:00`
 
 ## 1. Bang so sanh hieu nang RAG
 
@@ -9,9 +9,9 @@
 | Hit Rate (Retrieval) | 1.0000 | 0.5000 | 1.0000 | -0.5000 v | +0.0000 = |
 | Token F1 (trung binh) | 1.0000 | 0.5788 | 1.0000 | -0.4212 v | +0.0000 = |
 | Judge Accuracy | 1.0000 | 0.6000 | 1.0000 | -0.4000 v | +0.0000 = |
-| Judge Score (1-5) | 5 | 3.2000 | 5 | -1.8000 v | +0.0000 = |
+| Judge Score (1-5) | 5 | 3.4000 | 5 | -1.6000 v | +0.0000 = |
 | So cau hoi danh gia | 10 | 10 | 10 | - | - |
-| Judge source | heuristic_fallback | heuristic_fallback | heuristic_fallback | - | - |
+| Judge source | llm | llm | llm | - | - |
 
 ## 2. Data Quality Gate (Great Expectations 1.x)
 
