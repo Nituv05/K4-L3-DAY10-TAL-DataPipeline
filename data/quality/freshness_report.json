@@ -1,0 +1,13 @@
+{
+  "threshold_days": 180,
+  "latest_published": "2026-07-22",
+  "oldest_published": "2026-03-28",
+  "stale_rows": 1,
+  "total_rows": 24,
+  "stale_ratio": 0.0417,
+  "max_age_days": 181,
+  "is_fresh": true,
+  "generated_at": "2026-09-25T08:57:29.153664+00:00",
+  "stale_ratio_threshold": 0.25,
+  "alert": "OK - du lieu con tuoi."
+}
