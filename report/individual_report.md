@@ -11,7 +11,7 @@
 | Vai trò chính | Đóng gói artifact và kiểm tra bằng chứng kết quả tích hợp |
 | Repository | https://github.com/Nituv05/K4-L3-DAY10-TAL-DataPipeline |
 | Ngày lập báo cáo | 2026-09-25 |
-| Commit đóng góp | `e608ed8` — `Update repo`; đã nằm trong merge commit `1d17cdc` trên `origin/main` |
+| Commit đóng góp | `e608ed8` — đưa artifact vào Git, đã merge vào `origin/main`; `2aee2f9` — xác minh artifact và cập nhật báo cáo trên `tinvt` |
 
 ## 2. Vai trò và phạm vi công việc
 
@@ -23,7 +23,7 @@
 | Vector store | `data/chroma/`, `data/embeddings/` | Dữ liệu đã xử lý, MiniLM | Chroma DB và ba manifest | Đã commit trên `tinvt` |
 | Kết quả và báo cáo | `data/quality/`, `data/results/`, `data/reports/` | Output GX, freshness, evaluation | Quality reports, metrics, answers, corruption log, Markdown reports | Đã commit trên `tinvt` |
 
-Commit `e608ed8` thêm 47 artifact trong `data/`, không sửa `src/` hoặc `script/`. Tôi nhận trách nhiệm với phần đưa artifact vào Git và đối chiếu kết quả, không nhận quyền tác giả của các module do thành viên khác commit. Commit này đã nằm trong merge commit `1d17cdc` trên `origin/main`; trạng thái hiển thị trong GitHub Contributors vẫn cần kiểm tra.
+Commit `e608ed8` thêm 47 artifact trong `data/`; commit `2aee2f9` lưu lần kiểm tra Chroma/metrics và báo cáo. Hai commit không sửa `src/` hoặc `script/`. Tôi nhận trách nhiệm với phần đưa artifact vào Git và đối chiếu kết quả, không nhận quyền tác giả của các module do thành viên khác commit. `e608ed8` đã nằm trong merge commit `1d17cdc` trên `origin/main`; `2aee2f9` đang ở `tinvt`. Trạng thái hiển thị trong GitHub Contributors vẫn cần kiểm tra.
 
 ### Hỗ trợ tích hợp
 
@@ -81,9 +81,9 @@ Tôi đã đối chiếu các JSON answers, quality, freshness và corruption lo
 
 - **Bối cảnh:** Báo cáo cá nhân phải khớp Git history.
 - **Phương án cân nhắc:** Nhận ownership mã nguồn pipeline; hoặc nhận ownership bộ artifact và việc kiểm tra kết quả.
-- **Lựa chọn:** Ghi nhận phần artifact và đối chiếu kết quả có bằng chứng.
-- **Lý do:** Commit `e608ed8` chứa 47 file dưới `data/`, không chứa thay đổi mã nguồn. Cách ghi này tránh gán phần viết module của thành viên khác cho mình.
-- **Bằng chứng:** `git show --format= --name-only e608ed8`.
+- **Lựa chọn:** Ghi nhận phần artifact, lần xác minh và báo cáo kết quả có bằng chứng.
+- **Lý do:** Commit `e608ed8` chứa 47 file dưới `data/`; `2aee2f9` chứa các artifact chạy lại và báo cáo. Không commit nào thay đổi mã nguồn. Cách ghi này tránh gán phần viết module của thành viên khác cho mình.
+- **Bằng chứng:** `git show --format= --name-only e608ed8` và `git show --format= --name-only 2aee2f9`.
 
 ## 6. Vấn đề còn mở khi kiểm tra artifact
 
@@ -129,14 +129,14 @@ Nếu có thêm thời gian, tôi sẽ đánh giá tách riêng sáu loại corr
 
 ## 10. Tự kiểm tra trước khi nộp
 
-- [x] Phạm vi đóng góp được giới hạn theo commit `e608ed8`.
+- [x] Phạm vi đóng góp được giới hạn theo commit `e608ed8` và `2aee2f9`.
 - [x] Kết luận định lượng có JSON metrics, answers, quality và freshness để đối chiếu.
 - [x] Không ghi hai script đã chạy lại thành công trên bản nộp cuối khi chưa xác minh.
 - [x] Báo cáo không chứa API key hoặc token.
 - [ ] Xác nhận tên nhóm chính thức và nội dung cá nhân với nhóm.
 - [x] Xác nhận commit `e608ed8` đã được đưa vào `origin/main` qua merge commit `1d17cdc`.
 - [ ] Kiểm tra tên tác giả xuất hiện trong GitHub Contributors của nhánh mặc định.
-- [ ] Chạy lại hai entrypoint trên phiên bản cuối và ghi kết quả.
+- [x] Hai entrypoint đã chạy lại với exit code 0; bằng chứng ở `data/reports/run_verification.md`.
 
 **Họ và tên:** Vũ Thường Tín
 **Ngày:** 2026-09-25
