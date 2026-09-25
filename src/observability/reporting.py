@@ -8,8 +8,8 @@ from core.utils import now_utc, write_text
 METRIC_LABELS = [
     ("retrieval_hit_rate", "Hit Rate (Retrieval)"),
     ("mean_token_f1", "Token F1 (trung binh)"),
-    ("judge_accuracy", "LLM Judge Accuracy"),
-    ("mean_judge_score", "LLM Judge Score (1-5)"),
+    ("judge_accuracy", "Judge Accuracy"),
+    ("mean_judge_score", "Judge Score (1-5)"),
 ]
 
 
@@ -94,6 +94,7 @@ def generate_phase1_report(
     for key, label in METRIC_LABELS:
         lines.append(f"| {label} | {_fmt(metrics.get(key))} |")
     lines.append(f"| So cau hoi danh gia | {_fmt(metrics.get('samples'))} |")
+    lines.append(f"| Judge source | {_fmt(metrics.get('judge_source', 'unknown'))} |")
 
     ragas = metrics.get("ragas")
     if isinstance(ragas, dict):
@@ -149,6 +150,11 @@ def generate_corruption_report(
     lines.append(
         f"| So cau hoi danh gia | {_fmt(baseline_metrics.get('samples'))} "
         f"| {_fmt(corrupted_metrics.get('samples'))} | {_fmt(repaired_metrics.get('samples'))} | - | - |"
+    )
+    lines.append(
+        f"| Judge source | {_fmt(baseline_metrics.get('judge_source', 'unknown'))} "
+        f"| {_fmt(corrupted_metrics.get('judge_source', 'unknown'))} "
+        f"| {_fmt(repaired_metrics.get('judge_source', 'unknown'))} | - | - |"
     )
 
     lines += ["", "## 2. Data Quality Gate (Great Expectations 1.x)", ""]

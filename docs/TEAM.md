@@ -10,7 +10,7 @@
 | ---: | --- | --- | --- | --- | --- |
 | 1 | Lê Tuấn Anh | 2A202602952 | Pipeline dữ liệu và tích hợp; CP0–CP5 | `src/ingestion/`, `src/observability/`, `src/evaluation/testset.py`, `src/pipelines/` | [`report/2A202602952_LeTuanAnh.md`](../report/2A202602952_LeTuanAnh.md) |
 | 2 | Vũ Thường Tín | 2A202602955 | Artifact, đối chiếu kết quả và báo cáo; CP2–CP5 | `data/clean/`, `data/chroma/`, `data/eval/`, `data/quality/`, `data/results/`, `data/reports/`, `report/group_report.md` | [`report/2A202602955_VuThuongTin.md`](../report/2A202602955_VuThuongTin.md) |
-| 3 | Trần Quốc Bảo Long | 2A202602696 | Giao diện demo và hỗ trợ trình bày; CP6 | `ui/`, `script/run_ui.py`, `script/test_ui.py`, hướng dẫn UI trong `README.md` | Chưa có; cần Long tự hoàn thành `report/2A202602696_TranQuocBaoLong.md` |
+| 3 | Trần Quốc Bảo Long | 2A202602696 | Giao diện demo và hỗ trợ trình bày; CP6 | `ui/`, `script/run_ui.py`, `script/test_ui.py`, hướng dẫn UI trong `README.md` | [`report/2A202602696_TranQuocBaoLong.md`](../report/2A202602696_TranQuocBaoLong.md) |
 
 ## Bằng chứng Git và ranh giới sở hữu
 
@@ -18,7 +18,7 @@
 | --- | --- | --- |
 | Lê Tuấn Anh | `1629c3e`, `ad4e3d7`, `ea8202e` | Hoàn thiện 8 file của tầng dữ liệu/pipeline; viết báo cáo cá nhân và đưa về tên file theo MSSV. |
 | Vũ Thường Tín | `e608ed8`, `2aee2f9`, `ae93326` | Đưa artifact chạy pipeline vào Git, xác minh ba trạng thái và cập nhật báo cáo. |
-| Trần Quốc Bảo Long | `90d4c4d` | Thêm UI demo, server Python và bộ kiểm thử UI. |
+| Trần Quốc Bảo Long | `90d4c4d`, `ba94b77` | Thêm UI demo, server Python, bộ kiểm thử UI và báo cáo cá nhân. |
 
 `src/core/`, `src/retrieval/` và `src/evaluation/metrics.py` đã có trong starter repo hoặc được sửa bởi commit khác; bảng trên không gán quyền tác giả các module đó cho ba thành viên nếu lịch sử commit không chứng minh. Báo cáo riêng mô tả phần việc mỗi người tự thực hiện; không dùng chung `report/individual_report.md` làm bài nộp cá nhân.
 
@@ -40,10 +40,10 @@
 
 - **Đóng góp:** Thiết kế UI demo bằng `ui/index.html`, `ui/style.css`, `ui/app.js`; tạo server `script/run_ui.py`, kiểm thử `script/test_ui.py` và tài liệu `ui/README.md` trong commit `90d4c4d`.
 - **Bàn giao:** Dashboard đọc artifact, hiển thị pipeline/quality/metrics và cho phép chạy hai pha từ giao diện. Đây là phần giao diện/demo, không phải quyền tác giả của `src/retrieval/`.
-- **Việc còn thiếu:** Long tự viết báo cáo vai trò cá nhân theo mẫu `report/individual_report.md` và lưu thành `report/2A202602696_TranQuocBaoLong.md` trước khi nộp.
+- **Báo cáo riêng:** [`report/2A202602696_TranQuocBaoLong.md`](../report/2A202602696_TranQuocBaoLong.md), do Long commit tại `ba94b77`.
 
 ## Việc nhóm cần xác nhận trước khi nộp
 
-- [ ] Long hoàn thành báo cáo riêng và xác nhận mô tả vai trò của mình.
-- [ ] Cả ba thành viên kiểm tra commit xuất hiện trong GitHub Contributors của nhánh `main`.
-- [ ] Mỗi người tự nộp link repository trên VLearn LMS.
+- [x] Ba thành viên có báo cáo riêng theo MSSV trên nhánh `main`.
+- [x] Nhóm xác nhận phần Git/Contributors đã hoàn tất. GitHub API vẫn hiển thị các commit có email `tinvu@Mac-of-Nituv.local` dưới tên Anonymous; tài khoản `Nituv05` có mặt trong Contributors.
+- [x] Theo xác nhận của nhóm, mỗi thành viên đã tự nộp link repository trên VLearn LMS. Biên nhận chỉ xem được trong tài khoản của từng người.

@@ -15,9 +15,9 @@
 | --- | --- | --- | --- |
 | Lê Tuấn Anh | 2A202602952 | `1629c3e`: hoàn thiện ingestion, cleaning, GX, test set, corruption, orchestration và reporting | `report/2A202602952_LeTuanAnh.md` |
 | Vũ Thường Tín | 2A202602955 | `e608ed8`: đưa 47 artifact vào Git; `2aee2f9`: xác minh Chroma/metrics và cập nhật báo cáo | `report/2A202602955_VuThuongTin.md` |
-| Trần Quốc Bảo Long | 2A202602696 | `90d4c4d`: xây UI demo, server chạy cục bộ, kiểm thử và hướng dẫn | Chưa có báo cáo riêng; Long cần tự hoàn thành |
+| Trần Quốc Bảo Long | 2A202602696 | `90d4c4d`: xây UI demo, server chạy cục bộ, kiểm thử và hướng dẫn; `ba94b77`: tự commit báo cáo cá nhân | `report/2A202602696_TranQuocBaoLong.md` |
 
-Phân công chi tiết nằm trong `docs/TEAM.md`. Báo cáo cá nhân của Long còn thiếu; `report/individual_report.md` là mẫu dùng chung. Quyền tác giả trong bảng dựa trên commit và file thực tế, không suy từ tên package.
+Phân công chi tiết nằm trong `docs/TEAM.md`. Cả ba báo cáo cá nhân đã có file riêng theo MSSV trên `main`; `report/individual_report.md` là mẫu dùng chung. Quyền tác giả trong bảng dựa trên commit và file thực tế, không suy từ tên package.
 
 ## 2. Tóm tắt kết quả
 
@@ -161,7 +161,7 @@ Corruption → GX/freshness chuyển sang fail → retrieval và Token F1 giảm
 | Ragas skipped | Chưa có faithfulness/context metrics | Bật `RUN_RAGAS=1` khi evaluator sẵn sàng, lưu kết quả hoặc lỗi nguyên văn. |
 | Exact title lookup trong benchmark | Hit Rate baseline không đo riêng semantic retrieval | Thêm câu hỏi paraphrase không chứa exact title; so sánh metrics. |
 | GX fail nhưng vẫn index | Luồng này chưa phải quality gate chặn serving | Tách chế độ demo corruption và production; ở production dừng trước index khi `gate_passed=False`. |
-| Manifest lưu đường dẫn Chroma tuyệt đối | Nạp trực tiếp trên máy khác có thể lỗi | Dùng đường dẫn theo project root; kiểm tra trên checkout sạch. |
+| Khả năng chuyển index sang máy khác | Các đường dẫn tuyệt đối của lần chạy cũ đã được thay trong artifact nộp bài | Manifest dùng `data/chroma`; loader phân giải theo project root. Vẫn nên kiểm tra trên checkout sạch. |
 | Chưa tách từng corruption | Chưa quy được mức suy giảm cho từng loại lỗi | Ablation từng lỗi trên cùng test set, lưu metrics riêng. |
 | UI đọc artifact theo trạng thái đã lưu | Màn hình không tự chứng minh lần chạy pipeline hoặc tính nhất quán giữa nhiều file | Kiểm tra timestamp/exit code và đối chiếu `data/reports/run_verification.md`; không chạy hai job đồng thời. |
 
@@ -173,8 +173,10 @@ Corruption → GX/freshness chuyển sang fail → retrieval và Token F1 giảm
 - [x] Giới hạn heuristic judge, Ragas và agent demo được nêu rõ.
 - [x] UI test 2/2 pass và JavaScript qua kiểm tra cú pháp.
 - [x] Tên, MSSV và phần việc có bằng chứng của ba thành viên đã được ghi trong `docs/TEAM.md`.
-- [ ] Long tự hoàn thành báo cáo riêng `report/2A202602696_TranQuocBaoLong.md`; Tín và Lê đã có file theo MSSV.
+- [x] Cả ba báo cáo cá nhân theo MSSV đã có trên `main`, gồm báo cáo Long tại commit `ba94b77`.
+- [x] Manifest Chroma và báo cáo pha 1 dùng đường dẫn theo project root; báo cáo pipeline ghi rõ judge đang dùng heuristic fallback.
 - [x] Commit `2aee2f9` chứa SQLite cùng ba segment hiện hành, metrics và báo cáo; đã push lên `origin/tinvt`.
-- [x] Commit artifact `2aee2f9` đã vào `main` qua PR #4; phần cập nhật báo cáo hiện ở nhánh `tinvt`.
-- [ ] Merge phần cập nhật báo cáo từ `tinvt` vào nhánh nộp `main` sau khi nhóm duyệt.
-- [ ] Kiểm tra Contributors của nhánh mặc định và từng người nộp link lên LMS.
+- [x] Commit artifact `2aee2f9` đã vào `main` qua PR #4; phần cập nhật báo cáo `0ba2944` đã vào `main` qua PR #6.
+- [x] Theo xác nhận của nhóm, phần Git/Contributors đã hoàn tất. GitHub API vẫn ghi các commit dùng email `tinvu@Mac-of-Nituv.local` là Anonymous; tài khoản `Nituv05` có mặt trong Contributors.
+- [x] Theo xác nhận của nhóm, từng thành viên đã tự nộp link repository trên VLearn LMS; biên nhận nằm trong tài khoản cá nhân.
+- [ ] Hoàn thành live demo/Q&A khi đến lượt nhóm; việc này không thể xác minh từ repository.

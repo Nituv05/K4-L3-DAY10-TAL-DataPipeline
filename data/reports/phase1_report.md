@@ -9,8 +9,8 @@
 | source_api | Crossref REST API |
 | source_query | agentic retrieval augmented generation large language model |
 | source_filter | from-pub-date:2026-03-29,has-abstract:true |
-| raw_api_response | /Users/tinvu/Documents/LAB_VINUNI/K4-L3-DAY10-TAL-DataPipeline/data/raw/crossref_response.json |
-| raw_records_json | /Users/tinvu/Documents/LAB_VINUNI/K4-L3-DAY10-TAL-DataPipeline/data/raw/crossref_records.json |
+| raw_api_response | data/raw/crossref_response.json |
+| raw_records_json | data/raw/crossref_records.json |
 | raw_records | 24 |
 | clean_rows | 24 |
 | embedding_model | sentence-transformers/all-MiniLM-L6-v2 |
@@ -26,9 +26,10 @@
 | :--- | ---: |
 | Hit Rate (Retrieval) | 1.0000 |
 | Token F1 (trung binh) | 1.0000 |
-| LLM Judge Accuracy | 1.0000 |
-| LLM Judge Score (1-5) | 5 |
+| Judge Accuracy | 1.0000 |
+| Judge Score (1-5) | 5 |
 | So cau hoi danh gia | 10 |
+| Judge source | heuristic_fallback |
 
 **Ragas:** `skipped=Set RUN_RAGAS=1 to enable the slower Ragas pass.`
 
